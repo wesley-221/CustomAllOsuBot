@@ -1,0 +1,4 @@
+# Ignore the config.json file so it won't push any personal data
+configfiles/config.json
+
+node_modules

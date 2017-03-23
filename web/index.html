@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" />
+		<link href="circle.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div id="botWarning" class="botWarning">
+			<center>The bot is <b>NOT</b> in voice. Reconnect the bot to the voice channel.</center>
+		</div>
+
+		<div class="spacing"></div>
+		<div id="pos1" class="userPosition pos1">
+			<div class="userbubble">
+				<div id="bubble1" class="bubble">
+					<img id="img1" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user1">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div class="spacingBig"></div>
+
+		<div id="pos2" class="userPosition pos2">
+			<div class="userbubble">
+				<div id="bubble2" class="bubble">
+					<img id="img2" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user2">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div class="spacingBig"></div>
+
+		<div id="pos3" class="userPosition pos3">
+			<div class="userbubble">
+				<div id="bubble3" class="bubble">
+					<img id="img3" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user3">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div class="spacingBig"></div>
+
+		<div id="pos4" class="userPosition pos4">
+			<div class="userbubble">
+				<div id="bubble4" class="bubble">
+					<img id="img4" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user4">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div class="spacingBig"></div>
+
+		<div id="pos5" class="userPosition pos5">
+			<div class="userbubble">
+				<div id="bubble5" class="bubble">
+					<img id="img5" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user5">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos6" class="userPosition pos6">
+			<div class="userbubble">
+				<div id="bubble6" class="bubble">
+					<img id="img6" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user6">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos7" class="userPosition pos7">
+			<div class="userbubble">
+				<div id="bubble7" class="bubble">
+					<img id="img7" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user7">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos8" class="userPosition pos8">
+			<div class="userbubble">
+				<div id="bubble8" class="bubble">
+					<img id="img8" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user8">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos9" class="userPosition pos9">
+			<div class="userbubble">
+				<div id="bubble9" class="bubble">
+					<img id="img9" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user9">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos10" class="userPosition pos10">
+			<div class="userbubble">
+				<div id="bubble10" class="bubble">
+					<img id="img10" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user10">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos11" class="userPosition pos11">
+			<div class="userbubble">
+				<div id="bubble11" class="bubble">
+					<img id="img11" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user11">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+
+		<div id="pos12" class="userPosition pos12">
+			<div class="userbubble">
+				<div id="bubble12" class="bubble">
+					<img id="img12" src="./default.png" class="imageSize" />
+				</div>
+
+				<div class="spacing"></div>
+
+				<div class="user">
+					<center><span id="user12">Not connected</span></center>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script src="./socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+	    var socket = io.connect('http://83.81.115.75:7777');
+		var showAlert = 1;
+
+		socket.on('connectme', function(data) {
+			for(var user in data) {
+				if(data[user].user_id !== 0 && data[user].user_name != "Not Connected" && data[user].ava_url != "Not Connected") {
+					$("#pos" + user).css("display", "inline");
+					$("#user" + user).text(data[user].user_name);
+					$("#img" + user).attr("src", data[user].ava_url);
+				}
+			}
+		});
+
+		socket.on('users', function(user) {
+			for(var u in user) {
+				if(user[u].user_id !== 0 && user[u].user_name != "Not Connected" && user[u].ava_url != "Not Connected") {
+					$("#pos" + u).css("display", "inline");
+					$("#user" + u).text(user[u].user_name);
+					$("#img" + u).attr("src", user[u].ava_url);
+				}
+				else {
+					$("#pos" + u).css("display", "none");
+					$("#user" + u).text("Not Connected");
+					$("#img" + u).attr("src", "default.png");
+				}
+			}
+		});
+
+		socket.on('voiceUpdate', function(user) {
+			for(var u in user) {
+				if(user[u].user_id !== 0 && user[u].user_name != "Not Connected" && user[u].ava_url != "Not Connected") {
+					if(user[u].talking == true) {
+						$("#bubble" + u).addClass('bubbleGlow');
+					}
+					else if(user[u].talking == false) {
+						$("#bubble" + u).removeClass('bubbleGlow');
+					}
+				}
+			}
+		});
+
+		socket.on('botInVoice', function(status) {
+			if(!status) {
+				if(showAlert == 1) {
+					showAlert = 0;
+					var r = confirm("The bot is NOT in voice. Reconnect the bot to the voice channel.");
+
+					if(r == true) {
+						showAlert = 1;
+					}
+					else {
+						showAlert = 1;
+					}
+				}
+				// $("#botWarning").css("display", "inline");
+			}
+			else {
+				$("#botWarning").css("display", "none");
+			}
+		});
+	</script>
+</html>
