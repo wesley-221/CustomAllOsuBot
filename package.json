@@ -1,0 +1,24 @@
+{
+  "name": "customallosubot",
+  "version": "1.0.0",
+  "description": "The stream overlay for CustomAllOsu podcast",
+  "main": "startbot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wesleyalkemade/CustomAllOsuBot.git"
+  },
+  "keywords": [
+    "customallosu",
+    "osu",
+    "podcast"
+  ],
+  "author": "Wesley Alkemade",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wesleyalkemade/CustomAllOsuBot/issues"
+  },
+  "homepage": "https://github.com/wesleyalkemade/CustomAllOsuBot#readme"
+}
