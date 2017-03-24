@@ -234,5 +234,13 @@
 				$("#botWarning").css("display", "none");
 			}
 		});
+
+		document.onkeyup = function(e){
+			var e = e || window.event;
+			if(e.ctrlKey && e.altKey && e.which == 67) {
+				window.location.href = '5man.html';
+				return false;
+			}
+		}
 	</script>
 </html>

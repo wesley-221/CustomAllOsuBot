@@ -150,8 +150,12 @@
 			}
 		});
 
-		for(var i = 1; i <= 5; i ++) {
-			$("#pos" + i).css("display", "inline");
+		document.onkeyup = function(e){
+			var e = e || window.event;
+			if(e.ctrlKey && e.altKey && e.which == 67) {
+				window.location.href = 'circle.html';
+				return false;
+			}
 		}
 	</script>
 </html>
