@@ -28,7 +28,7 @@ var podCastRole = {
 	"Podcast": "",
 	"PodcastGuest": ""
 };
-var allUsers = {};
+var allUsers = {}, isInitialized = false;
 
 initialize_allUsers(12);
 
@@ -54,36 +54,40 @@ discord.on('ready', function() {
 
 	io.on('connection', function (socket) {
 		// add users in allUsers that are already connected
-		initialize_allUsers(12);
-		for(var channel in discord.servers[podcastServerID].channels) {
-			if(discord.servers[podcastServerID].channels[channel].id == podcastVoiceChannelID) {
-				for(var user in discord.servers[podcastServerID].channels[channel].members) {
-					var userID = discord.servers[podcastServerID].channels[channel].members[user].user_id;
+		if(isInitialized === false) {
+			initialize_allUsers(12);
+			for(var channel in discord.servers[podcastServerID].channels) {
+				if(discord.servers[podcastServerID].channels[channel].id == podcastVoiceChannelID) {
+					for(var user in discord.servers[podcastServerID].channels[channel].members) {
+						var userID = discord.servers[podcastServerID].channels[channel].members[user].user_id;
 
-					var userRoles = discord.servers[podcastServerID].members[userID].roles;
-					var userHasRole = 0;
+						var userRoles = discord.servers[podcastServerID].members[userID].roles;
+						var userHasRole = 0;
 
-					for(var pcr in podCastRole) {
-						if(userRoles.indexOf(podCastRole[pcr]) !== -1) {
-							userHasRole = 1;
-							break;
+						for(var pcr in podCastRole) {
+							if(userRoles.indexOf(podCastRole[pcr]) !== -1) {
+								userHasRole = 1;
+								break;
+							}
 						}
-					}
 
-					if(!userHasRole)
-						break;
-
-					for(var alluser in allUsers) {
-						if(allUsers[alluser].user_id === 0 && allUsers[alluser].user_name == "Not Connected" && allUsers[alluser].ava_url == "Not Connected") {
-							allUsers[alluser].user_id = userID;
-							allUsers[alluser].user_name = discord.users[userID].username;
-							allUsers[alluser].ava_url = discord.users[userID].avatarURL;
-							allUsers[alluser].talking = false;
+						if(!userHasRole)
 							break;
+
+						for(var alluser in allUsers) {
+							if(allUsers[alluser].user_id === 0 && allUsers[alluser].user_name == "Not Connected" && allUsers[alluser].ava_url == "Not Connected") {
+								allUsers[alluser].user_id = userID;
+								allUsers[alluser].user_name = discord.users[userID].username;
+								allUsers[alluser].ava_url = discord.users[userID].avatarURL;
+								allUsers[alluser].talking = false;
+								break;
+							}
 						}
 					}
 				}
 			}
+
+			isInitialized = true;
 		}
 
 		// initialized allUsers with users that are already connected, emit it to app
@@ -116,6 +120,7 @@ discord.on('ready', function() {
 								allUsers[i].user_name = "Not Connected";
 								allUsers[i].ava_url = "Not Connected";
 								allUsers[i].talking = false;
+								break;
 							}
 						}
 
@@ -130,11 +135,13 @@ discord.on('ready', function() {
 							allUsers[i].user_name = discord.users[userID].username;
 							allUsers[i].ava_url = discord.users[userID].avatarURL;
 							allUsers[i].talking = false;
-							break;
+							io.emit('users', allUsers);
+
+							return;
 						}
 					}
 
-					io.emit('users', allUsers);
+					// io.emit('users', allUsers);
 				}
 			}
 
@@ -253,5 +260,8 @@ discord.on('message', function(user, userID, channelID, message, event) {
 		discord.leaveVoiceChannel(podcastVoiceChannelID, function(err) {
 			if(err) console.log(err);
 		});
+	}
+	else if(message.indexOf('!') === 0 && message.substr(1) == "t") {
+		console.log(allUsers);
 	}
 });
