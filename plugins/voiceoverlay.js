@@ -95,10 +95,12 @@ discord.on('ready', function() {
 			if(event.t == "GUILD_MEMBER_UPDATE") {
 				var userID = event.d.user.id;
 
+				// user is in podcastVoiceChannelID
 				if(discord.servers[podcastServerID].members[userID].voice_channel_id == podcastVoiceChannelID) {
 					var userRoles = event.d.roles;
 					var userHasRole = 0;
 
+					// check if user has the correct role
 					for(var pcr in podCastRole) {
 						if(userRoles.indexOf(podCastRole[pcr]) !== -1) {
 							userHasRole = 1;
@@ -121,6 +123,7 @@ discord.on('ready', function() {
 						return;
 					}
 
+					// put the data in the first available spot
 					for(var i in allUsers) {
 						if(allUsers[i].user_id === 0 && allUsers[i].user_name == "Not Connected" && allUsers[i].ava_url == "Not Connected") {
 							allUsers[i].user_id = userID;
@@ -139,6 +142,7 @@ discord.on('ready', function() {
 				var userID = event.d.user_id;
 				var voiceChannelID = event.d.channel_id;
 
+				// user has left the voice channel, remove user from array
 				if(voiceChannelID === null) {
 					for(var i in allUsers) {
 						if(allUsers[i].user_id == userID) {
@@ -148,17 +152,19 @@ discord.on('ready', function() {
 							allUsers[i].ava_url = "Not Connected";
 							allUsers[i].talking = false;
 
-							console.log(userID + " has left the voice channel, removed them from the array. Emitting socket.");
 							io.emit('users', allUsers);
 							break;
 						}
 					}
 				}
 				else {
+					// check if they are in the podcastVoiceChannelID
 					if(voiceChannelID == podcastVoiceChannelID) {
 						var userRoles = discord.servers[podcastServerID].members[userID].roles;
 						var userHasRole = 0;
+						var userAlreadyExist = {exist: false, id: 0};
 
+						// check if the user has the correct role
 						for(var pcr in podCastRole) {
 							if(userRoles.indexOf(podCastRole[pcr]) !== -1) {
 								userHasRole = 1;
@@ -171,19 +177,30 @@ discord.on('ready', function() {
 
 						for(var i in allUsers) {
 							if(allUsers[i].user_id == userID) {
-								return;
-							}
-
-							if(allUsers[i].user_id === 0 && allUsers[i].user_name == "Not Connected" && allUsers[i].ava_url == "Not Connected") {
-								allUsers[i].user_id = userID;
-								allUsers[i].user_name = discord.users[userID].username;
-								allUsers[i].ava_url = discord.users[userID].avatarURL;
-								allUsers[i].talking = false;
+								userAlreadyExist.exist = true;
+								userAlreadyExist.id = i;
 								break;
 							}
 						}
 
-						console.log(userID + " has joined the voice channel " + voiceChannelID + ", emit socket.");
+						if(userAlreadyExist.exist) {
+							allUsers[userAlreadyExist.id].user_id = userID;
+							allUsers[userAlreadyExist.id].user_name = discord.users[userID].username;
+							allUsers[userAlreadyExist.id].ava_url = discord.users[userID].avatarURL;
+							allUsers[userAlreadyExist.id].talking = false;
+						}
+						else {
+							for(var i in allUsers) {
+								if(allUsers[i].user_id === 0 && allUsers[i].user_name == "Not Connected" && allUsers[i].ava_url == "Not Connected") {
+									allUsers[i].user_id = userID;
+									allUsers[i].user_name = discord.users[userID].username;
+									allUsers[i].ava_url = discord.users[userID].avatarURL;
+									allUsers[i].talking = false;
+									break;
+								}
+							}
+						}
+
 						io.emit('users', allUsers);
 					}
 				}

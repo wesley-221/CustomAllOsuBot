@@ -3,10 +3,11 @@
 	<head>
 		<meta charset="UTF-8">
 		<link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" />
-		<link href="circle.css" rel="stylesheet" />
+		<link href="./css/circle.css" rel="stylesheet" />
 	</head>
 
 	<body>
+		<button onclick="showAll();">button</button>
 		<div id="botWarning" class="botWarning">
 			<center>The bot is <b>NOT</b> in voice. Reconnect the bot to the voice channel.</center>
 		</div>
@@ -192,10 +193,11 @@
 	<script src="./socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
-	    var socket = io.connect('http://83.81.115.75:7777');
+		var socket = io.connect('http://localhost:7777');
 		var showAlert = 1;
 
 		socket.on('connectme', function(data) {
+			console.log(data);
 			for(var user in data) {
 				if(data[user].user_id !== 0 && data[user].user_name != "Not Connected" && data[user].ava_url != "Not Connected") {
 					$("#pos" + user).css("display", "inline");
@@ -235,22 +237,29 @@
 
 		socket.on('botInVoice', function(status) {
 			if(!status) {
-				if(showAlert == 1) {
-					showAlert = 0;
-					var r = confirm("The bot is NOT in voice. Reconnect the bot to the voice channel.");
-
-					if(r == true) {
-						showAlert = 1;
-					}
-					else {
-						showAlert = 1;
-					}
-				}
-				// $("#botWarning").css("display", "inline");
+				// if(showAlert == 1) {
+				// 	showAlert = 0;
+				// 	var r = confirm("The bot is NOT in voice. Reconnect the bot to the voice channel.");
+				//
+				// 	if(r == true) {
+				// 		showAlert = 1;
+				// 	}
+				// 	else {
+				// 		showAlert = 1;
+				// 	}
+				// }
+				$("#botWarning").css("display", "inline");
 			}
 			else {
 				$("#botWarning").css("display", "none");
 			}
 		});
+
+		var testvar = 3;
+		function showAll() {
+			$("#pos" + testvar).css("display", "inline");
+
+			testvar++;
+		}
 	</script>
 </html>
