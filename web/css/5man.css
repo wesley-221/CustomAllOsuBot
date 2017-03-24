@@ -10,16 +10,30 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Oswald', sans-serif;
-	background-image: url('caobg.jpg');
+	background-image: url('../media/caobg.jpg');
 	color: white;
 }
 
+.botWarning {
+	display: none;
+	position: absolute;
+	top: 40%;
+	left: 25%;
+
+	background-color: red;
+	border-radius: 10px;
+	width: 50%;
+	height: 200px;
+	line-height: 200px;
+	font-size: 35px;
+}
+
 .spacing {
-	padding: 5px;
+	padding-bottom: 5px;
 }
 
 .spacingBig {
-	padding-bottom: 50px;
+	padding-bottom: 10px;
 }
 
 .userbubble {
@@ -46,13 +60,19 @@ body {
 	-ms-user-select: 		box-shadow 0.3s, outline 0.3s, opacity 0.2s;
 }
 
-.bubble:hover {
-	box-shadow: 0 0 75px 5px #00ff00;
+.imageSize {
+	width: 150px;
+	height: 150px;
+}
+
+.bubbleGlow {
+	box-shadow: 0 0 30px 5px #00cc00;
 	opacity: 1;
 	outline: 3px solid rgb(0, 255, 0);
 }
 
 .userPosition {
+
 	width: 150px;
 	height: 150px;
 }

@@ -10,7 +10,7 @@ body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Oswald', sans-serif;
-	background-image: url('../caobg.jpg');
+	background-image: url('../media/caobg.jpg');
 	color: white;
 }
 
@@ -62,7 +62,7 @@ body {
 }
 
 .bubbleGlow {
-	box-shadow: 0 0 75px 5px #00ff00;
+	box-shadow: 0 0 30px 5px #00cc00;
 	opacity: 1;
 	outline: 3px solid rgb(0, 255, 0);
 }

@@ -140,8 +140,6 @@ discord.on('ready', function() {
 							return;
 						}
 					}
-
-					// io.emit('users', allUsers);
 				}
 			}
 
@@ -151,16 +149,40 @@ discord.on('ready', function() {
 
 				// user has left the voice channel, remove user from array
 				if(voiceChannelID === null) {
-					for(var i in allUsers) {
-						if(allUsers[i].user_id == userID) {
-							allUsers[i] = {};
-							allUsers[i].user_id = 0;
-							allUsers[i].user_name = "Not Connected";
-							allUsers[i].ava_url = "Not Connected";
-							allUsers[i].talking = false;
+					initialize_allUsers(12);
+					for(var channel in discord.servers[podcastServerID].channels) {
+						if(discord.servers[podcastServerID].channels[channel].id == podcastVoiceChannelID) {
+							for(var user in discord.servers[podcastServerID].channels[channel].members) {
+								var userID = discord.servers[podcastServerID].channels[channel].members[user].user_id;
 
-							io.emit('users', allUsers);
-							break;
+								if(discord.servers[podcastServerID].channels[channel].members[user].user_id == event.d.user_id)
+									continue;
+
+								var userRoles = discord.servers[podcastServerID].members[userID].roles;
+								var userHasRole = 0;
+
+								for(var pcr in podCastRole) {
+									if(userRoles.indexOf(podCastRole[pcr]) !== -1) {
+										userHasRole = 1;
+										break;
+									}
+								}
+
+								if(!userHasRole)
+									continue;
+
+								for(var alluser in allUsers) {
+									if(allUsers[alluser].user_id === 0 && allUsers[alluser].user_name == "Not Connected" && allUsers[alluser].ava_url == "Not Connected") {
+										allUsers[alluser].user_id = userID;
+										allUsers[alluser].user_name = discord.users[userID].username;
+										allUsers[alluser].ava_url = discord.users[userID].avatarURL;
+										allUsers[alluser].talking = false;
+										break;
+									}
+								}
+
+								io.emit('users', allUsers);
+							}
 						}
 					}
 				}
@@ -233,9 +255,166 @@ discord.on('ready', function() {
 });
 
 discord.on('message', function(user, userID, channelID, message, event) {
-	if(message.indexOf('!') === 0 && message.substr(1) == "join") {
+	if(message.indexOf('!') === 0 && message.substr(1) == "t") {
+		var allUsersFilled = {}, allUsersNotFilled = {};
+		var allUserTest = {
+			'1': {
+				user_id: 55515,
+				user_name: 'Wesley',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'2': {
+				user_id: 123451234,
+				user_name: 'Sartan',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'3': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'4': {
+				user_id: 123415,
+				user_name: 'Vincs',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'5': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'6': {
+				user_id: 123498,
+				user_name: 'Cawub',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'7': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'8': {
+				user_id: 123412351234,
+				user_name: 'Dohland',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'9': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'10': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'11': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			},
+			'12': {
+				user_id: 0,
+				user_name: 'Not Connected',
+				ava_url: 'Not Connected',
+				talking: false
+			}
+		};
+
+		for(var u in allUserTest) {
+			if(allUserTest[u].user_id === 0 && allUserTest[u].user_name == "Not Connected" && allUserTest[u].ava_url == "Not Connected") {
+				allUsersFilled[u] = allUserTest[u];
+			}
+			else {
+				allUsersNotFilled[u] = allUserTest[u];
+			}
+		}
+
+		// console.log(allUsersFilled);
+		// console.log(allUsersNotFilled);
+		console.log(allUserTest);
+	}
+	else if(message.indexOf('!') === 0 && message.substr(1) == "join") {
+		var botVoiceChannel = discord.servers[podcastServerID].members[amazejs.getConfig().ids.botId].voice_channel_id;
+
+		if(botVoiceChannel === undefined || botVoiceChannel === null) {
+			discord.joinVoiceChannel(podcastVoiceChannelID, function(error, events) {
+				if (error) return console.error(error);
+
+				discord.sendMessage({
+					to: channelID,
+					message: "I will now track voice activity."
+				});
+
+				//This can be done on both Node and the Browser using the same code
+				events.on('speaking', function(voiceUserID, SSRC, speakingBool) {
+					var userRoles = discord.servers[podcastServerID].members[voiceUserID].roles;
+
+					for(var pcr in podCastRole) {
+						if(userRoles.indexOf(podCastRole[pcr]) !== -1) {
+							for(var u in allUsers) {
+								if(allUsers[u].user_id == voiceUserID) {
+									allUsers[u].talking = speakingBool;
+									io.emit('voiceUpdate', allUsers);
+									break;
+								}
+							}
+							return;
+						}
+					}
+				});
+			});
+		}
+		else {
+			discord.sendMessage({
+				to: channelID,
+				message: "I'm already tracking voice activity."
+			});
+		}
+	}
+	else if(message.indexOf('!') === 0 && message.substr(1) == "leave") {
+		var botVoiceChannel = discord.servers[podcastServerID].members[amazejs.getConfig().ids.botId].voice_channel_id;
+
+		if(botVoiceChannel === undefined || botVoiceChannel === null) {
+			discord.sendMessage({
+				to: channelID,
+				message: "I'm not in a voice channel."
+			});
+		}
+		else {
+			discord.leaveVoiceChannel(podcastVoiceChannelID, function(err) {
+				if(err) console.log(err);
+				discord.sendMessage({
+					to: channelID,
+					message: "I have stopped tracking voice activity."
+				});
+			});
+		}
+	}
+	else if(message.indexOf('!') === 0 && message.substr(1) == "fleave") {
+		discord.leaveVoiceChannel(podcastVoiceChannelID, function(err) {
+			if(err) console.log(err);
+		});
+	}
+	else if(message.indexOf('!') === 0 && message.substr(1) == "fjoin") {
 		discord.joinVoiceChannel(podcastVoiceChannelID, function(error, events) {
 			if (error) return console.error(error);
+
+			discord.sendMessage({
+				to: channelID,
+				message: "I will now track voice activity."
+			});
 
 			//This can be done on both Node and the Browser using the same code
 			events.on('speaking', function(voiceUserID, SSRC, speakingBool) {
@@ -255,13 +434,5 @@ discord.on('message', function(user, userID, channelID, message, event) {
 				}
 			});
 		});
-	}
-	else if(message.indexOf('!') === 0 && message.substr(1) == "leave") {
-		discord.leaveVoiceChannel(podcastVoiceChannelID, function(err) {
-			if(err) console.log(err);
-		});
-	}
-	else if(message.indexOf('!') === 0 && message.substr(1) == "t") {
-		console.log(allUsers);
 	}
 });
