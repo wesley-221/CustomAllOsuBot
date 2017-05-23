@@ -77,7 +77,13 @@ discord.on('ready', function() {
 						for(var alluser in allUsers) {
 							if(allUsers[alluser].user_id === 0 && allUsers[alluser].user_name == "Not Connected" && allUsers[alluser].ava_url == "Not Connected") {
 								allUsers[alluser].user_id = userID;
-								allUsers[alluser].user_name = discord.users[userID].username;
+								if(discord.servers[podcastServerID].members[userID].nick === null) {
+									allUsers[alluser].user_name = discord.users[userID].username;
+								}
+								else {
+									allUsers[alluser].user_name = discord.servers[podcastServerID].members[userID].nick;
+								}
+
 								allUsers[alluser].ava_url = discord.users[userID].avatarURL;
 								allUsers[alluser].talking = false;
 								break;
@@ -132,7 +138,14 @@ discord.on('ready', function() {
 					for(var i in allUsers) {
 						if(allUsers[i].user_id === 0 && allUsers[i].user_name == "Not Connected" && allUsers[i].ava_url == "Not Connected") {
 							allUsers[i].user_id = userID;
-							allUsers[i].user_name = discord.users[userID].username;
+
+							if(discord.servers[podcastServerID].members[userID].nick === null) {
+								allUsers[i].user_name = discord.users[userID].username;
+							}
+							else {
+								allUsers[i].user_name = discord.servers[podcastServerID].members[userID].nick;
+							}
+
 							allUsers[i].ava_url = discord.users[userID].avatarURL;
 							allUsers[i].talking = false;
 							io.emit('users', allUsers);
@@ -174,7 +187,14 @@ discord.on('ready', function() {
 								for(var alluser in allUsers) {
 									if(allUsers[alluser].user_id === 0 && allUsers[alluser].user_name == "Not Connected" && allUsers[alluser].ava_url == "Not Connected") {
 										allUsers[alluser].user_id = userID;
-										allUsers[alluser].user_name = discord.users[userID].username;
+
+										if(discord.servers[podcastServerID].members[userID].nick === null) {
+											allUsers[alluser].user_name = discord.users[userID].username;
+										}
+										else {
+											allUsers[alluser].user_name = discord.servers[podcastServerID].members[userID].nick;
+										}
+
 										allUsers[alluser].ava_url = discord.users[userID].avatarURL;
 										allUsers[alluser].talking = false;
 										break;
@@ -214,7 +234,14 @@ discord.on('ready', function() {
 
 						if(userAlreadyExist.exist) {
 							allUsers[userAlreadyExist.id].user_id = userID;
-							allUsers[userAlreadyExist.id].user_name = discord.users[userID].username;
+
+							if(discord.servers[podcastServerID].members[userID].nick === null) {
+								allUsers[userAlreadyExist.id].user_name = discord.users[userID].username;
+							}
+							else {
+								allUsers[userAlreadyExist.id].user_name = discord.servers[podcastServerID].members[userID].nick;
+							}
+
 							allUsers[userAlreadyExist.id].ava_url = discord.users[userID].avatarURL;
 							allUsers[userAlreadyExist.id].talking = false;
 						}
@@ -222,7 +249,14 @@ discord.on('ready', function() {
 							for(var i in allUsers) {
 								if(allUsers[i].user_id === 0 && allUsers[i].user_name == "Not Connected" && allUsers[i].ava_url == "Not Connected") {
 									allUsers[i].user_id = userID;
-									allUsers[i].user_name = discord.users[userID].username;
+
+									if(discord.servers[podcastServerID].members[userID].nick === null) {
+										allUsers[i].user_name = discord.users[userID].username;
+									}
+									else {
+										allUsers[i].user_name = discord.servers[podcastServerID].members[userID].nick;
+									}
+
 									allUsers[i].ava_url = discord.users[userID].avatarURL;
 									allUsers[i].talking = false;
 									break;

@@ -78,21 +78,66 @@ body {
 }
 
 .pos1 {
+	position: absolute;
 	display: none;
+	top: 20px;
 }
 
 .pos2 {
+	position: absolute;
 	display: none;
+	top: 210px;
 }
 
 .pos3 {
+	position: absolute;
 	display: none;
+	top: 400px;
 }
 
 .pos4 {
+	position: absolute;
 	display: none;
+	top: 590px;
 }
 
 .pos5 {
+	position: absolute;
 	display: none;
+	top: 780px;
+}
+
+.pos6 {
+	display: none;
+	position: absolute;
+	top: 20px;
+	left: 190px;
+}
+
+.pos7 {
+	display: none;
+	position: absolute;
+	top: 210px;
+	left: 190px;
+}
+
+.pos8 {
+	display: none;
+	position: absolute;
+	top: 400px;
+	left: 190px;
+}
+
+.pos9 {
+	display: none;
+	position: absolute;
+	top: 590px;
+	left: 190px;
+}
+
+.pos10 {
+	display: none;
+	position: absolute;
+	top: 780px;
+	left: 190px;
 }
